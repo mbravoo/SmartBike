@@ -11,7 +11,7 @@
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Contraseña (opcional)</string>
-    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in">Iniciar o Registrar</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">El Email ingresado no es válido</string>
     <string name="error_invalid_password">La contraseña es demasiado corta</string>
