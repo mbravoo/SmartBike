@@ -2,14 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_consumo"
+            android:title="Consumo de energia diario" />
         <item
             android:id="@+id/nav_ubicacion"
             android:icon="@drawable/ic_my_location_24dp"
             android:title="Mi ubicación" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
