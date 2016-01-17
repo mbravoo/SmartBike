@@ -43,13 +43,9 @@ public class MainChartFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.fragment_main_chart, null);
 
         chart = (LineChart) mainView.findViewById(R.id.chart);
-
         chart.setPinchZoom(true);
-
         setData(30, 100);
-
-
-        // Inflate the layout for this fragment
+        
         return mainView;
     }
 

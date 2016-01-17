@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import cl.hxl.smartbike.connection.BluetoothClient;
 import cl.hxl.smartbike.fragments.MainChartFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -88,7 +89,8 @@ public class MainActivity extends AppCompatActivity
             Intent ub = new Intent(this, MapsActivity.class);
             startActivity(ub);
         } else if (id == R.id.nav_manage) {
-
+            Intent bt = new Intent(this, BluetoothClient.class);
+            startActivity(bt);
         } else if (id == R.id.nav_logout) {
             Intent login = new Intent(this, LoginActivity.class);
             startActivity(login);
