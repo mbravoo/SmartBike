@@ -15,21 +15,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TMP"
-        android:id="@+id/tempButton"
+        android:text="Solicitar Datos"
+        android:id="@+id/solicitaDatos"
         android:layout_gravity="center_horizontal" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="lightOn"
-        android:id="@+id/lightOn"
-        android:layout_gravity="center_horizontal" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="lightOff"
-        android:id="@+id/lightOff"
-        android:layout_gravity="center_horizontal" />
 </LinearLayout>

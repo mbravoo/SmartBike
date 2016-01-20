@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,22 +31,18 @@ public class BluetoothClient extends AppCompatActivity {
     int readBufferPosition = 0;
 
     public void sendBtMsg(String msg2send) {
-        //UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"); //Standard SerialPortService ID
+        String msg = msg2send;
         UUID uuid = UUID.fromString("94f39d29-7d6d-437d-973b-fba39e49d4ee"); //Standard SerialPortService ID
-        try {
 
+        try {
             mmSocket = mmDevice.createRfcommSocketToServiceRecord(uuid);
             if (!mmSocket.isConnected()) {
                 mmSocket.connect();
             }
-
-            String msg = msg2send;
-            //msg += "\n";
             OutputStream mmOutputStream = mmSocket.getOutputStream();
-            mmOutputStream.write(msg.getBytes());
+            mmOutputStream.write(msg.getBytes()); //Método getBytes para algún string, lo convierte en una secuencia de bytes
 
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -60,65 +55,53 @@ public class BluetoothClient extends AppCompatActivity {
         final Handler handler = new Handler();
 
         final TextView myLabel = (TextView) findViewById(R.id.btResult);
-        final Button tempButton = (Button) findViewById(R.id.tempButton);
-        final Button lightOnButton = (Button) findViewById(R.id.lightOn);
-        final Button lightOffButton = (Button) findViewById(R.id.lightOff);
+        final Button solicitaDatos = (Button) findViewById(R.id.solicitaDatos);
 
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         final class workerThread implements Runnable {
-
             private String btMsg;
 
             public workerThread(String msg) {
                 btMsg = msg;
             }
 
-            public void run()
-            {
+            public void run() {
                 sendBtMsg(btMsg);
-                while(!Thread.currentThread().isInterrupted())
-                {
+                while(!Thread.currentThread().isInterrupted()) {
                     int bytesAvailable;
                     boolean workDone = false;
 
                     try {
                         InputStream mmInputStream;
                         mmInputStream = mmSocket.getInputStream();
+
                         bytesAvailable = mmInputStream.available();
-                        if(bytesAvailable > 0)
-                        {
+                        if(bytesAvailable > 0) {
                             byte[] packetBytes = new byte[bytesAvailable];
                             Log.e("SmartBike recv bt","bytes available");
                             byte[] readBuffer = new byte[1024];
                             mmInputStream.read(packetBytes);
 
-                            for(int i=0;i<bytesAvailable;i++)
-                            {
+                            for(int i = 0; i < bytesAvailable; i++) {
                                 byte b = packetBytes[i];
-                                if(b == delimiter)
-                                {
+                                if(b == delimiter) {
                                     byte[] encodedBytes = new byte[readBufferPosition];
                                     System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
                                     final String data = new String(encodedBytes, "US-ASCII");
                                     readBufferPosition = 0;
 
                                     //The variable data now contains our full command
-                                    handler.post(new Runnable()
-                                    {
-                                        public void run()
-                                        {
+                                    handler.post(new Runnable() {
+                                        public void run() {
                                             myLabel.setText(data);
                                         }
                                     });
 
                                     workDone = true;
                                     break;
-
-
                                 }
-                                else
-                                {
+                                else {
                                     readBuffer[readBufferPosition++] = b;
                                 }
                             }
@@ -127,56 +110,20 @@ public class BluetoothClient extends AppCompatActivity {
                                 mmSocket.close();
                                 break;
                             }
-
                         }
                     } catch (IOException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-
                 }
             }
         };
-
-
-        // start temp button handler
-
-        tempButton.setOnClickListener(new View.OnClickListener() {
+        //Solicitar datos haciendo click en un boton
+        solicitaDatos.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Perform action on temp button click
-
-                (new Thread(new workerThread("temp"))).start();
-
+                (new Thread(new workerThread("1"))).start();
             }
         });
-
-
-        //end temp button handler
-
-        //start light on button handler
-        lightOnButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Perform action on temp button click
-
-                (new Thread(new workerThread("lightOn"))).start();
-
-            }
-        });
-        //end light on button handler
-
-        //start light off button handler
-
-        lightOffButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Perform action on temp button click
-
-                (new Thread(new workerThread("lightOff"))).start();
-
-            }
-        });
-
-        // end light off button handler
-
+        //Si el bluetooth no está habilitado, pide al usuario habilitarlo
         if(!mBluetoothAdapter.isEnabled())
         {
             Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -184,6 +131,7 @@ public class BluetoothClient extends AppCompatActivity {
         }
 
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+
         if(pairedDevices.size() > 0)
         {
             for(BluetoothDevice device : pairedDevices)
@@ -196,7 +144,5 @@ public class BluetoothClient extends AppCompatActivity {
                 }
             }
         }
-
-
     }
 }

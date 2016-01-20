@@ -15,12 +15,14 @@ public class BluetoothClientConn extends Thread{
 
     public boolean connect(BluetoothDevice bTDevice, UUID mUUID) {
         BluetoothSocket temp = null;
+
         try {
             temp = bTDevice.createRfcommSocketToServiceRecord(mUUID);
         } catch (IOException e) {
             Log.d("CONNECTTHREAD", "Could not create RFCOMM socket:" + e.toString());
             return false;
         }
+
         try {
             bTSocket.connect();
         } catch(IOException e) {
