@@ -1,6 +1,6 @@
 package cl.hxl.smartbike.fragments;
 
-import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,10 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,8 @@ import cl.hxl.smartbike.R;
 public class MainChartFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    LineChart chart;
+    BarChart chart;
+    private Typeface mTf;
 
     public MainChartFragment() {
         // Required empty public constructor
@@ -42,55 +44,38 @@ public class MainChartFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View mainView = inflater.inflate(R.layout.fragment_main_chart, null);
 
-        chart = (LineChart) mainView.findViewById(R.id.chart);
+        chart = (BarChart) mainView.findViewById(R.id.chart);
         chart.setPinchZoom(true);
-        setData(30, 100);
+        setData(7, 100);
         
         return mainView;
     }
 
     private void setData(int count, float range) {
-
         ArrayList<String> xVals = new ArrayList<String>();
         for (int i = 0; i < count; i++) {
-            xVals.add((i) + "");
+            xVals.add(mDays[i % 7]);
         }
 
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
-
+        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
         for (int i = 0; i < count; i++) {
-
             float mult = (range + 1);
-            float val = (float) (Math.random() * mult) + 3;// + (float)
-            // ((mult *
-            // 0.1) / 10);
-            yVals.add(new Entry(val, i));
+            float val = (float) (Math.random() * mult);
+            yVals1.add(new BarEntry(val, i));
         }
 
-        // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(yVals, "Consumo de energía durante el mes");
-        // set1.setFillAlpha(110);
-        // set1.setFillColor(Color.RED);
+        BarDataSet set1 = new BarDataSet(yVals1, "Consumo diario");
+        set1.setBarSpacePercent(35f);
 
-        // set the line to be drawn like this "- - - - - -"
-        set1.enableDashedLine(10f, 5f, 0f);
-        set1.enableDashedHighlightLine(10f, 5f, 0f);
-        set1.setColor(Color.BLACK);
-        set1.setCircleColor(Color.RED);
-        set1.setLineWidth(1f);
-        set1.setCircleSize(3f);
-        set1.setDrawCircleHole(false);
-        set1.setValueTextSize(9f);
-        set1.setFillAlpha(65);
-        set1.setFillColor(Color.BLACK);
-//        set1.setDrawFilled(true);
-        // set1.setShader(new LinearGradient(0, 0, 0, mChart.getHeight(),
-        // Color.BLACK, Color.WHITE, Shader.TileMode.MIRROR));
+        ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
+        dataSets.add(set1);
 
-        // create a data object with the datasets
-        LineData data = new LineData(xVals, set1);
+        BarData data = new BarData(xVals, dataSets);
+        data.setValueTextSize(10f);
+        data.setValueTypeface(mTf);
 
-        // set data
         chart.setData(data);
     }
+
+    private String[] mDays = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"};
 }

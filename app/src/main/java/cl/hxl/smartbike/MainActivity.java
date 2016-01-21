@@ -19,6 +19,7 @@ import android.view.MenuItem;
 
 import cl.hxl.smartbike.connection.BluetoothClient;
 import cl.hxl.smartbike.fragments.MainChartFragment;
+import cl.hxl.smartbike.fragments.RealtimeChartFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -85,6 +86,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             switchContent(MainChartFragment.newInstance(), null);
+        } else if (id == R.id.nav_tiempoReal) {
+            switchContent(RealtimeChartFragment.newInstance(), null);
         } else if (id == R.id.nav_ubicacion) {
             Intent ub = new Intent(this, MapsActivity.class);
             startActivity(ub);
