@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import cl.hxl.smartbike.R;
+import cl.hxl.smartbike.fragments.RealtimeChartFragment;
 
 /**
  * Created by Matias Gilbert on 14-01-2016.
